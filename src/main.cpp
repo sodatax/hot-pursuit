@@ -107,13 +107,13 @@ public:
 class Player
 {
 public:
-    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
-                                                                                           speed(player_speed),
-                                                                                           size(player_size),
-                                                                                           bounding_box(create_bounding_box(sprite, size))
-    {
-    }
-
+    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : 
+        sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
+        speed(player_speed),
+        size(player_size),
+        bounding_box(create_bounding_box(sprite, size))
+    {}
+    
     /**
      * Update the position and bounding box of the player based on d-pad movement.
      */
