@@ -182,7 +182,7 @@ int main()
     // Create a player and initialize it
     // TODO: we will move the initialization logic to a constructor.
     Player player = Player(35, 22, 7, PLAYER_SIZE);
-    Enemy enemy = Enemy(-30, 22, 2, ENEMY_SIZE);
+    Enemy enemy = Enemy(-30, 50, 2, ENEMY_SIZE);
 
     while (true)
     {
