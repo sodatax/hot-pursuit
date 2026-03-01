@@ -1,6 +1,7 @@
 #include <bn_core.h>
 #include <bn_display.h>
 #include <bn_keypad.h>
+#include <bn_random.h>
 #include <bn_rect.h>
 #include <bn_size.h>
 #include <bn_string.h>
@@ -196,6 +197,8 @@ int main()
 {
     bn::core::init();
 
+    bn::random rng = bn::random();
+
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
@@ -213,6 +216,12 @@ int main()
             scoreDisplay.resetScore();
             player.sprite.set_x(44);
             player.sprite.set_y(22);
+
+            int new_x = rng.get_int(MIN_X, MAX_X);
+            int new_y = rng.get_int(MIN_Y, MAX_Y);
+
+            enemy.enemy_sprite.set_x(new_x);
+            enemy.enemy_sprite.set_y(new_y);
         }
 
         // Update the scores and disaply them
