@@ -6,6 +6,7 @@
 #include <bn_string.h>
 #include <bn_sprite_ptr.h>
 #include <bn_sprite_text_generator.h>
+#include <bn_log.h>
 
 #include "common_fixed_8x16_font.h"
 #include "bn_sprite_items_dot.h"
@@ -107,12 +108,12 @@ public:
 class Player
 {
 public:
-    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : 
-        sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
-        speed(player_speed),
-        size(player_size),
-        bounding_box(create_bounding_box(sprite, size))
-    {}
+    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
+                                                                                           speed(player_speed),
+                                                                                           size(player_size),
+                                                                                           bounding_box(create_bounding_box(sprite, size))
+    {
+    }
 
     /**
      * Update the position and bounding box of the player based on d-pad movement.
@@ -149,18 +150,37 @@ public:
 class Enemy
 {
 public:
-    Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) : 
-        enemy_sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
-        speed(enemy_speed),
-        size(enemy_size),
-        bounding_box(create_bounding_box(enemy_sprite, size))
-    {}
+    Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) : enemy_sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
+                                                                                        speed(enemy_speed),
+                                                                                        size(enemy_size),
+                                                                                        bounding_box(create_bounding_box(enemy_sprite, size))
+    {
+    }
 
     /**
      * Update the position and bounding box of the player based on d-pad movement.
      */
-    void update()
+    void update(Player player)
     {
+        bn::fixed player_X = player.sprite.x();
+        bn::fixed player_Y = player.sprite.y();
+
+        if (enemy_sprite.x() > player_X)
+        {
+            enemy_sprite.set_x(enemy_sprite.x() - speed);
+        }
+        if (enemy_sprite.x() < player_X)
+        {
+            enemy_sprite.set_x(enemy_sprite.x() + speed);
+        }
+        if (enemy_sprite.y() > player_Y)
+        {
+            enemy_sprite.set_y(enemy_sprite.y() - speed);
+        }
+        if (enemy_sprite.y() < player_Y)
+        {
+            enemy_sprite.set_y(enemy_sprite.y() + speed);
+        }
 
         bounding_box = create_bounding_box(enemy_sprite, size);
     }
@@ -179,15 +199,13 @@ int main()
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
-    // Create a player and initialize it
-    // TODO: we will move the initialization logic to a constructor.
     Player player = Player(35, 22, 7, PLAYER_SIZE);
-    Enemy enemy = Enemy(-30, 50, 2, ENEMY_SIZE);
+    Enemy enemy = Enemy(30, 50, 2, ENEMY_SIZE);
 
     while (true)
     {
         player.update();
-        enemy.update();
+        enemy.update(player);
 
         // Reset the current score and player position if the player collides with enemy
         if (enemy.bounding_box.intersects(player.bounding_box))
