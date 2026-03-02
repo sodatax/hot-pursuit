@@ -203,7 +203,7 @@ void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::
         int new_y = rng.get_int(MIN_Y, MAX_Y);
 
         //Enemy(x, y, speed, size);
-        enemy_speed+=0.07;
+        enemy_speed+=0.12;
         enemys.push_back(Enemy(new_x, new_y, enemy_speed, ENEMY_SIZE));
         bn::sound_items::new_enemy.play();
     }
@@ -218,11 +218,14 @@ int main()
     bn::random rng = bn::random();
     bn::fixed enemy_speed = 0.75;
 
+    int enemy_start_x = -100; 
+    int enemy_start_y = -50;
+
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
     Player player = Player(35, 22, 3, PLAYER_SIZE);
-    enemys.push_back(Enemy(30, 50, .75, ENEMY_SIZE));
+    enemys.push_back(Enemy(enemy_start_x, enemy_start_y, .75, ENEMY_SIZE));
     bn::sound_items::new_enemy.play();
 
     while (true)
@@ -237,13 +240,10 @@ int main()
                 player.sprite.set_x(44);
                 player.sprite.set_y(22);
 
-                int new_x = rng.get_int(MIN_X, MAX_X);
-                int new_y = rng.get_int(MIN_Y, MAX_Y);
-
                 enemys.clear();
                 enemy_speed = 0.75;
 
-                enemys.push_back(Enemy(new_x, new_y, enemy_speed, ENEMY_SIZE));
+                enemys.push_back(Enemy(enemy_start_x, enemy_start_y, enemy_speed, ENEMY_SIZE));
                 bn::sound_items::new_enemy.play();
                 break;
             }
