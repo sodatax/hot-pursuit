@@ -196,31 +196,35 @@ int main()
 {
     bn::core::init();
 
+    bn::vector<Enemy, 30> enemys = {};
+
     bn::random rng = bn::random();
 
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
     Player player = Player(35, 22, 7, PLAYER_SIZE);
-    Enemy enemy = Enemy(30, 50, 2, ENEMY_SIZE);
+    enemys.push_back(Enemy(30, 50, 2, ENEMY_SIZE));
+    enemys.push_back(Enemy(-30, 20, 2, ENEMY_SIZE));
 
     while (true)
     {
         player.update();
-        enemy.update(player);
-
-        // Reset the current score and player position if the player collides with enemy
-        if (enemy.bounding_box.intersects(player.bounding_box))
+        for (Enemy &enemy : enemys)
         {
-            scoreDisplay.resetScore();
-            player.sprite.set_x(44);
-            player.sprite.set_y(22);
+            enemy.update(player);
+            if (enemy.bounding_box.intersects(player.bounding_box))
+            {
+                scoreDisplay.resetScore();
+                player.sprite.set_x(44);
+                player.sprite.set_y(22);
 
-            int new_x = rng.get_int(MIN_X, MAX_X);
-            int new_y = rng.get_int(MIN_Y, MAX_Y);
+                int new_x = rng.get_int(MIN_X, MAX_X);
+                int new_y = rng.get_int(MIN_Y, MAX_Y);
 
-            enemy.enemy_sprite.set_x(new_x);
-            enemy.enemy_sprite.set_y(new_y);
+                enemy.enemy_sprite.set_x(new_x);
+                enemy.enemy_sprite.set_y(new_y);
+            }
         }
 
         // Update the scores and disaply them
