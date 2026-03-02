@@ -9,4 +9,12 @@ wave 9
 
 for you all you have to do now is wave 8 some of wave 9 with music and wave 10.
 
-update here
+== update here ==
+
+enemies are not getting faster over time - will fix
+
+wave 8 - remaking sprites
+
+wave 9 - will add sound effects, music, and stagnant enemies
+
+wave 10 - readme
