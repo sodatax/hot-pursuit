@@ -192,11 +192,25 @@ public:
     bn::rect bounding_box; // The rectangle around the sprite for checking collision
 };
 
+void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::random &rng)
+{
+    int spots = 19;
+    if (scoreDisplay.score % 300 == 0 && scoreDisplay.score != 0)
+    {
+        spots--;
+
+        int new_x = rng.get_int(MIN_X, MAX_X);
+        int new_y = rng.get_int(MIN_Y, MAX_Y);
+
+        enemys.push_back(Enemy(new_x, new_y, 2, ENEMY_SIZE));
+    }
+}
+
 int main()
 {
     bn::core::init();
 
-    bn::vector<Enemy, 30> enemys = {};
+    bn::vector<Enemy, 20> enemys = {};
 
     bn::random rng = bn::random();
 
@@ -205,7 +219,6 @@ int main()
 
     Player player = Player(35, 22, 7, PLAYER_SIZE);
     enemys.push_back(Enemy(30, 50, 2, ENEMY_SIZE));
-    enemys.push_back(Enemy(-30, 20, 2, ENEMY_SIZE));
 
     while (true)
     {
@@ -222,10 +235,13 @@ int main()
                 int new_x = rng.get_int(MIN_X, MAX_X);
                 int new_y = rng.get_int(MIN_Y, MAX_Y);
 
-                enemy.enemy_sprite.set_x(new_x);
-                enemy.enemy_sprite.set_y(new_y);
+                enemys.clear();
+
+                enemys.push_back(Enemy(new_x, new_y, 2, ENEMY_SIZE));
+                break;
             }
         }
+        levelUpdate(scoreDisplay, enemys, rng);
 
         // Update the scores and disaply them
         scoreDisplay.update();
