@@ -9,6 +9,7 @@
 #include <bn_sprite_text_generator.h>
 #include <bn_log.h>
 
+#include "bn_sound_items.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sprite_items_dot.h"
 #include "bn_sprite_items_square.h"
@@ -191,10 +192,9 @@ public:
     bn::rect bounding_box; // The rectangle around the sprite for checking collision
 };
 
-void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::random &rng)
+void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::random &rng, bn::fixed &enemy_speed)
 {
     int spots = 19;
-    int speed = 1;
     if (scoreDisplay.score % 300 == 0 && scoreDisplay.score != 0)
     {
         spots--;
@@ -203,9 +203,9 @@ void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::
         int new_y = rng.get_int(MIN_Y, MAX_Y);
 
         //Enemy(x, y, speed, size);
-        enemys.push_back(Enemy(new_x, new_y, speed, ENEMY_SIZE));
-
-        speed += 0.5;
+        enemy_speed+=0.07;
+        enemys.push_back(Enemy(new_x, new_y, enemy_speed, ENEMY_SIZE));
+        bn::sound_items::new_enemy.play();
     }
 }
 
@@ -216,12 +216,14 @@ int main()
     bn::vector<Enemy, 20> enemys = {};
 
     bn::random rng = bn::random();
+    bn::fixed enemy_speed = 0.75;
 
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
     Player player = Player(35, 22, 3, PLAYER_SIZE);
     enemys.push_back(Enemy(30, 50, .75, ENEMY_SIZE));
+    bn::sound_items::new_enemy.play();
 
     while (true)
     {
@@ -239,12 +241,14 @@ int main()
                 int new_y = rng.get_int(MIN_Y, MAX_Y);
 
                 enemys.clear();
+                enemy_speed = 0.75;
 
-                enemys.push_back(Enemy(new_x, new_y, .75, ENEMY_SIZE));
+                enemys.push_back(Enemy(new_x, new_y, enemy_speed, ENEMY_SIZE));
+                bn::sound_items::new_enemy.play();
                 break;
             }
         }
-        levelUpdate(scoreDisplay, enemys, rng);
+        levelUpdate(scoreDisplay, enemys, rng, enemy_speed);
 
         // Update the scores and disaply them
         scoreDisplay.update();
