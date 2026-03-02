@@ -41,9 +41,9 @@ static constexpr int HIGH_SCORE_Y = -70;
 bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size)
 {
     return bn::rect(sprite.x().round_integer(),
-                    sprite.y().round_integer(),
-                    box_size.width(),
-                    box_size.height());
+        sprite.y().round_integer(),
+        box_size.width(),
+        box_size.height());
 }
 
 /**
@@ -56,11 +56,10 @@ class ScoreDisplay
 {
 public:
     ScoreDisplay() : score(0),                                                                 // Start score at 0
-                     high_score(0),                                                            // Start high score at 0
-                     score_sprites(bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS>()),             // Start with empty vector for score sprites
-                     text_generator(bn::sprite_text_generator(common::fixed_8x16_sprite_font)) // Use a new text generator
-    {
-    }
+        high_score(0),                                                            // Start high score at 0
+        score_sprites(bn::vector<bn::sprite_ptr, MAX_SCORE_CHARS>()),             // Start with empty vector for score sprites
+        text_generator(bn::sprite_text_generator(common::fixed_8x16_sprite_font)) // Use a new text generator
+    {}
 
     /**
      * Increases score by 1 and updates high score if needed. Displays score and high score.
@@ -109,12 +108,12 @@ public:
 class Player
 {
 public:
-    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
-                                                                                           speed(player_speed),
-                                                                                           size(player_size),
-                                                                                           bounding_box(create_bounding_box(sprite, size))
-    {
-    }
+    Player(int starting_x, int starting_y, bn::fixed player_speed, bn::size player_size) : 
+        sprite(bn::sprite_items::dot.create_sprite(starting_x, starting_y)),
+        speed(player_speed),
+        size(player_size),
+        bounding_box(create_bounding_box(sprite, size))
+    {}
 
     /**
      * Update the position and bounding box of the player based on d-pad movement.
@@ -150,12 +149,12 @@ public:
 class Enemy
 {
 public:
-    Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) : enemy_sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
-                                                                                        speed(enemy_speed),
-                                                                                        size(enemy_size),
-                                                                                        bounding_box(create_bounding_box(enemy_sprite, size))
-    {
-    }
+    Enemy(int starting_x, int starting_y, bn::fixed enemy_speed, bn::size enemy_size) : 
+        enemy_sprite(bn::sprite_items::square.create_sprite(starting_x, starting_y)),
+        speed(enemy_speed),
+        size(enemy_size),
+        bounding_box(create_bounding_box(enemy_sprite, size))
+    {}
 
     /**
      * Update the position and bounding box of the player based on d-pad movement.
@@ -195,7 +194,7 @@ public:
 void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::random &rng)
 {
     int spots = 19;
-    int speed = 2;
+    int speed = 1;
     if (scoreDisplay.score % 300 == 0 && scoreDisplay.score != 0)
     {
         spots--;
@@ -203,9 +202,10 @@ void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::
         int new_x = rng.get_int(MIN_X, MAX_X);
         int new_y = rng.get_int(MIN_Y, MAX_Y);
 
+        //Enemy(x, y, speed, size);
         enemys.push_back(Enemy(new_x, new_y, speed, ENEMY_SIZE));
 
-        speed = speed + 0.5;
+        speed += 0.5;
     }
 }
 
@@ -220,8 +220,8 @@ int main()
     // Create a new score display
     ScoreDisplay scoreDisplay = ScoreDisplay();
 
-    Player player = Player(35, 22, 7, PLAYER_SIZE);
-    enemys.push_back(Enemy(30, 50, 2, ENEMY_SIZE));
+    Player player = Player(35, 22, 3, PLAYER_SIZE);
+    enemys.push_back(Enemy(30, 50, .75, ENEMY_SIZE));
 
     while (true)
     {
@@ -240,7 +240,7 @@ int main()
 
                 enemys.clear();
 
-                enemys.push_back(Enemy(new_x, new_y, 2, ENEMY_SIZE));
+                enemys.push_back(Enemy(new_x, new_y, .75, ENEMY_SIZE));
                 break;
             }
         }
