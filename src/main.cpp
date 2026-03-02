@@ -195,6 +195,7 @@ public:
 void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::random &rng)
 {
     int spots = 19;
+    int speed = 2;
     if (scoreDisplay.score % 300 == 0 && scoreDisplay.score != 0)
     {
         spots--;
@@ -202,7 +203,9 @@ void levelUpdate(ScoreDisplay &scoreDisplay, bn::vector<Enemy, 20> &enemys, bn::
         int new_x = rng.get_int(MIN_X, MAX_X);
         int new_y = rng.get_int(MIN_Y, MAX_Y);
 
-        enemys.push_back(Enemy(new_x, new_y, 2, ENEMY_SIZE));
+        enemys.push_back(Enemy(new_x, new_y, speed, ENEMY_SIZE));
+
+        speed = speed + 0.5;
     }
 }
 
