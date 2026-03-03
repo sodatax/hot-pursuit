@@ -9,9 +9,9 @@ DONE enemy speed resets after intersecting
 
 DONE wave 8 - remaking sprites
 
-wave 9: 
+DONE wave 9: 
 - DONE sound effects
 - DONE music
 - DONE changed backdrop
 
-wave 10 - readme
+DONE wave 10 - readme
