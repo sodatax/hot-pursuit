@@ -8,7 +8,9 @@
 #include <bn_sprite_ptr.h>
 #include <bn_sprite_text_generator.h>
 #include <bn_log.h>
+#include <bn_backdrop.h>
 
+#include "bn_music_items.h"
 #include "bn_sound_items.h"
 #include "common_fixed_8x16_font.h"
 #include "bn_sprite_items_dot.h"
@@ -218,6 +220,8 @@ int main()
     bn::random rng = bn::random();
     bn::fixed enemy_speed = 0.75;
 
+    bn::backdrop::set_color(bn::color(11,11,11));
+
     int enemy_start_x = -100; 
     int enemy_start_y = -50;
 
@@ -227,6 +231,8 @@ int main()
     Player player = Player(35, 22, 3, PLAYER_SIZE);
     enemys.push_back(Enemy(enemy_start_x, enemy_start_y, .75, ENEMY_SIZE));
     bn::sound_items::new_enemy.play();
+
+    bn::music_items::pursuit_music.play(0.075);
 
     while (true)
     {
@@ -242,7 +248,8 @@ int main()
 
                 enemys.clear();
                 enemy_speed = 0.75;
-
+                
+                bn::sound_items::player_explosion.play();
                 enemys.push_back(Enemy(enemy_start_x, enemy_start_y, enemy_speed, ENEMY_SIZE));
                 bn::sound_items::new_enemy.play();
                 break;
