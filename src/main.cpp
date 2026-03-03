@@ -246,10 +246,10 @@ int main()
                 player.sprite.set_x(44);
                 player.sprite.set_y(22);
 
+                bn::sound_items::player_explosion.play();
                 enemys.clear();
                 enemy_speed = 0.75;
                 
-                bn::sound_items::player_explosion.play();
                 enemys.push_back(Enemy(enemy_start_x, enemy_start_y, enemy_speed, ENEMY_SIZE));
                 bn::sound_items::new_enemy.play();
                 break;
