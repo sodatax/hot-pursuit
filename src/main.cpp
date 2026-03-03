@@ -232,7 +232,7 @@ int main()
     enemys.push_back(Enemy(enemy_start_x, enemy_start_y, .75, ENEMY_SIZE));
     bn::sound_items::new_enemy.play();
 
-    bn::music_items::pursuit_music.play(0.075);
+    bn::music_items::pursuit_music.play(0.35);
 
     while (true)
     {
