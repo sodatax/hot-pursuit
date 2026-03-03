@@ -220,7 +220,7 @@ int main()
     bn::random rng = bn::random();
     bn::fixed enemy_speed = 0.75;
 
-    bn::backdrop::set_color(bn::color(11,11,11));
+    bn::backdrop::set_color(bn::color(11,11,11)); 
 
     int enemy_start_x = -100; 
     int enemy_start_y = -50;
